@@ -4,7 +4,7 @@
  __PocketMine Plugin__
 name=PocketJobs
 description=PocketJobs introduces a job system into your PocketMine world.
-version=1.3.1
+version=1.3.2
 author=MinecrafterJPN
 class=PocketJobs
 apiversion=9
