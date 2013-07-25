@@ -265,7 +265,6 @@ class PocketJobs implements Plugin
 		$cfg = $this->playerList->get($username);
 		if($cfg['slot1'] === $targetJob or $cfg['slot2'] === $targetJob)
 		{
-			console("KOKODAYO");
 			$this->api->dhandle("money.handle", array(
 					'username' => $username,
 					'method' => 'grant',
