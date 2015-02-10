@@ -5,6 +5,7 @@ version: 1.0
 api: [1.10.0]
 load: POSTWORLD
 description: Introduces job into your world
+website: https://github.com/MinecrafterJPN/PocketJobs
 depend: [PocketMoney]
 commands:
  jobs:
