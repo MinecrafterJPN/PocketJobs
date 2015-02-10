@@ -1,0 +1,25 @@
+name: PocketJobs
+main: MinecrafterJPN\PocketJobs
+author: MinecrafterJPN
+version: 1.0
+api: [1.10.0]
+load: POSTWORLD
+description: Introduces job into your world
+depend: [PocketMoney]
+commands:
+ jobs:
+  desciption: PocketJobs main command
+  usage: /jobs [subcommand]
+  permission: pocketjobs.command
+permissions:
+ pocketjobs:
+  default: true
+  description: Allows using all the PocketJobs things
+  children:
+   pocketjobs.command:
+    default: true
+    description: Allows using all the PocketJobs commands
+    children:
+     pocketjobs.command.reset:
+      default: op
+      description: Allows using reset commands
