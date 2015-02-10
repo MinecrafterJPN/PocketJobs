@@ -138,7 +138,7 @@ class PocketJobs extends PluginBase implements Listener
         }
 
         switch ($command->getName()) {
-            case "job":
+            case "jobs":
                 $subCommand = strtolower(array_shift($args));
                 switch ($subCommand) {
                     case "":
