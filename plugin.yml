@@ -20,7 +20,3 @@ permissions:
    pocketjobs.command:
     default: true
     description: Allows using all the PocketJobs commands
-    children:
-     pocketjobs.command.reset:
-      default: op
-      description: Allows using reset commands

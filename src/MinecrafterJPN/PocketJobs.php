@@ -30,7 +30,7 @@ class PocketJobs extends PluginBase implements Listener
         $this->users = new Config($this->getDataFolder() . "users.yml", Config::YAML);
         $this->joblist = new Config($this->getDataFolder() . "joblist.yml", Config::YAML,
             array(
-                'Woodcutter' => array(
+                'woodcutter' => array(
                     'break' => array(
                         array(
                             'ID' => Block::WOOD,
@@ -77,7 +77,7 @@ class PocketJobs extends PluginBase implements Listener
                     )
                 ),
 
-                'Miner' => array(
+                'miner' => array(
                     'break' => array(
                         array(
                             'ID' => Block::STONE,
@@ -150,8 +150,8 @@ class PocketJobs extends PluginBase implements Listener
                         break;
 
                     case "my":
-                        $slot1 = is_null($this->users->get($sender->getName())['slot1']) ? "empty" : $this->users->get($sender->getName())['slot1'];
-                        $slot2 = is_null($this->users->get($sender->getName())['slot2']) ? "empty" : $this->users->get($sender->getName())['slot2'];
+                        $slot1 = is_null($s = $this->users->get($sender->getName())['slot1']) ? "empty" : $s;
+                        $slot2 = is_null($s = $this->users->get($sender->getName())['slot2']) ? "empty" : $s;
                         $sender->sendMessage("Slot1: $slot1, Slot2: $slot2");
                         break;
 
@@ -229,30 +229,29 @@ class PocketJobs extends PluginBase implements Listener
                 foreach ($jobinfo[$type] as $detail) {
                     if ($detail['ID'] === $id and $detail['meta'] === $meta) {
                         $amount = $detail['amount'];
-                        $slot = $this->users->get($username);
-                        if ($slot['slot1'] === $jobname || $slot['slot2'] === $jobname) {
+                        $slots = $this->users->get($username);
+                        if ($slots['slot1'] === $jobname || $slots['slot2'] === $jobname) {
                             $this->getServer()->getPluginManager()->getPlugin("PocketMoney")->grantMoney($username, $amount);
                         }
                     }
                 }
             }
-
         }
     }
 
     private function joinJob($username, $job)
     {
-        $slot = $this->users->get($username);
-        if ($slot['slot1'] === $job || $slot['slot2'] === $job) {
+        $slots = $this->users->get($username);
+        if ($slots['slot1'] === $job || $slots['slot2'] === $job) {
             $this->getServer()->getPlayer($username)->sendMessage("You have been already part of $job");
             return;
         }
-        if (isset($slot['slot1'])) {
-            if (isset($slot['slot2'])) {
+        if (isset($slots['slot1'])) {
+            if (isset($slots['slot2'])) {
                 $this->getServer()->getPlayer($username)->sendMessage("Your job slot is full");
             } else {
                 $this->users->set($username, array(
-                    'slot1' => $slot['slot1'],
+                    'slot1' => $slots['slot1'],
                     'slot2' => $job
                 ));
                 $this->users->save();
@@ -261,7 +260,7 @@ class PocketJobs extends PluginBase implements Listener
         } else {
             $this->users->set($username, array(
                 'slot1' => $job,
-                'slot2' => $slot['slot2']
+                'slot2' => $slots['slot2']
             ));
             $this->users->save();
             $this->getServer()->getPlayer($username)->sendMessage("Set $job to your job slot1");
@@ -270,17 +269,17 @@ class PocketJobs extends PluginBase implements Listener
 
     private function leaveJob($username, $job)
     {
-        $slot = $this->users->get($username);
-        if ($slot['slot1'] === $job){
+        $slots = $this->users->get($username);
+        if ($slots['slot1'] === $job) {
             $this->users->set($username, array(
                 'slot1' => null,
-                'slot2' => $slot['slot2']
+                'slot2' => $slots['slot2']
             ));
             $this->users->save();
             $this->getServer()->getPlayer($username)->sendMessage("Remove $job from your job slot1");
-        } elseif ($slot['slot2'] === $job) {
+        } elseif ($slots['slot2'] === $job) {
             $this->users->set($username, array(
-                'slot1' => $slot['slot1'],
+                'slot1' => $slots['slot1'],
                 'slot2' => null
             ));
             $this->users->save();
@@ -292,11 +291,11 @@ class PocketJobs extends PluginBase implements Listener
 
     private function infoJob($username, $job)
     {
-        foreach($this->joblist->getAll(true) as $aJob){
-            if($aJob === $job){
+        foreach ($this->joblist->getAll(true) as $aJob) {
+            if ($aJob === $job) {
                 $info = $this->joblist->get($job);
-                foreach($info as $type => $detail){
-                    foreach($detail as $value){
+                foreach ($info as $type => $detail) {
+                    foreach ($detail as $value) {
                         $id = $value['ID'];
                         $meta = $value['meta'];
                         $amount = $value['amount'];
